@@ -22,9 +22,19 @@ class Farmland extends BaseEntity {
     private Long userId;
 
     @Enumerated
-    private Season season;
+    private Season season = Season.S2018;
 
     private boolean archive;
+
+    static public Farmland create(String name, Area area, Long userId) {
+        return new Farmland(name, area, userId);
+    }
+
+    private Farmland(String name, Area area, Long userId) {
+        this.name = name;
+        this.area = area;
+        this.userId = userId;
+    }
 
     public void attachOwner(Long userId) {
         this.userId = userId;
