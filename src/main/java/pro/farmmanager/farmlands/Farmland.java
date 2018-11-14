@@ -16,8 +16,7 @@ class Farmland extends BaseEntity {
     @Embedded
     private FarmlandGeometry geometry;
 
-    @Embedded
-    private Area area;
+    private Float area;
 
     private Long userId;
 
@@ -26,11 +25,11 @@ class Farmland extends BaseEntity {
 
     private boolean archive;
 
-    static public Farmland create(String name, Area area, Long userId) {
+    static public Farmland create(String name, Float area, Long userId) {
         return new Farmland(name, area, userId);
     }
 
-    private Farmland(String name, Area area, Long userId) {
+    private Farmland(String name, Float area, Long userId) {
         this.name = name;
         this.area = area;
         this.userId = userId;
@@ -56,7 +55,7 @@ class Farmland extends BaseEntity {
         this.season = season;
     }
 
-    public void changeArea(Area area) {
+    public void changeArea(Float area) {
         this.area = area;
     }
 
