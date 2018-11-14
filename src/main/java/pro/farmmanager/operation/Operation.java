@@ -32,10 +32,6 @@ class Operation extends BaseEntity {
         DONE;
     }
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
     private Long farmlandId;
 
     @Enumerated

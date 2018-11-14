@@ -14,10 +14,6 @@ class Resource extends BaseEntity {
         SEEDS
     }
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
     private String name;
 
     private String description;

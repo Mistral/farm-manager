@@ -9,10 +9,6 @@ import javax.persistence.*;
 @Entity
 class OperationResource extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
     @ManyToOne
     private Resource resource;
 
