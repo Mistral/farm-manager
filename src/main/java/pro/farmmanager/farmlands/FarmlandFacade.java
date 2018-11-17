@@ -1,23 +1,21 @@
 package pro.farmmanager.farmlands;
 
 import pro.farmmanager.farmlands.dto.FarmlandDto;
-import pro.farmmanager.user.UserFacade;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class FarmlandFacade {
 
     private FarmlandManager farmlandManager;
 
-    private UserFacade userFacade;
-
-    FarmlandFacade(FarmlandManager farmlandManager, UserFacade userFacade) {
+    FarmlandFacade(FarmlandManager farmlandManager) {
         this.farmlandManager = farmlandManager;
-        this.userFacade = userFacade;
     }
 
-    UUID createFarmland(String name, Float area) {
-        return farmlandManager.createFarmland(name, area, userFacade.getAuthorizedUser());
+    UUID createFarmland(String name, Float area, UUID ownerId) {
+        return farmlandManager.createFarmland(name, area, ownerId);
     }
 
     FarmlandDto getFarmlandById(UUID farmlandId) {
@@ -26,6 +24,13 @@ public class FarmlandFacade {
 
     void archiveFarmland(UUID farmlandId) {
         farmlandManager.archiveFarmland(farmlandId);
+    }
+
+    List<FarmlandDto> getFarmlandsForUser(UUID ownerId) {
+        return farmlandManager.getFarmlandsForUser(ownerId)
+                              .stream()
+                              .map(Farmland::toDto)
+                              .collect(Collectors.toList());
     }
 
 }

@@ -36,6 +36,10 @@ class Farmland extends BaseEntity {
         this.ownerId = ownerId;
     }
 
+    UUID getOwnerId() {
+        return ownerId;
+    }
+
     void attachOwner(UUID userId) {
         this.ownerId = userId;
     }
