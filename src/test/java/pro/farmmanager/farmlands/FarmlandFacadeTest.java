@@ -12,6 +12,10 @@ import static org.junit.Assert.*;
 
 public class FarmlandFacadeTest {
 
+    private final static Float FARMLAND_AREA = 2.25f;
+
+    private final static String FARMLAND_NAME = "Farmland Custom Name";
+
     private FarmlandFacade farmlandFacade;
 
     private InMemorySystem system;
@@ -24,7 +28,7 @@ public class FarmlandFacadeTest {
 
     @Test
     public void shouldCreateFarmland() {
-        UUID farmlandId = farmlandFacade.createFarmland("Custom Name", 2.75f);
+        UUID farmlandId = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA);
         assertNotNull(farmlandId);
     }
 
@@ -35,11 +39,24 @@ public class FarmlandFacadeTest {
     }
 
     @Test
-    public void getFarmlandWithDetails() {
-        //        FarmlandDto farmlandDto = farmlandFacade.getFarmlandById(customFarmlandId);
-        //
-        //        assertEquals("Custom Farmland", farmlandDto.getName());
-        //        assertEquals(1.25, farmlandDto.getArea());
+    public void shouldGetFarmlandWithDetails() {
+        UUID farmlandId = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA);
+
+        FarmlandDto farmlandDto = farmlandFacade.getFarmlandById(farmlandId);
+
+        assertEquals(FARMLAND_NAME, farmlandDto.getName());
+        assertEquals(FARMLAND_AREA, farmlandDto.getArea(), 0.0);
+    }
+
+    @Test
+    public void shouldArchiveFarmland() {
+        UUID farmlandId = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA);
+
+        farmlandFacade.archiveFarmland(farmlandId);
+
+        FarmlandDto farmlandDto = farmlandFacade.getFarmlandById(farmlandId);
+
+        assertTrue(farmlandDto.isArchived());
     }
 
 }
