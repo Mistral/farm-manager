@@ -4,6 +4,7 @@ import pro.farmmanager.farmlands.dto.FarmlandDto;
 import pro.farmmanager.shared_kernel.BaseEntity;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 class Farmland extends BaseEntity {
@@ -18,25 +19,25 @@ class Farmland extends BaseEntity {
 
     private Float area;
 
-    private Long userId;
+    private UUID ownerId;
 
     @Enumerated
     private Season season = Season.S2018;
 
-    private boolean archive;
+    private boolean archive = false;
 
-    static public Farmland create(String name, Float area, Long userId) {
-        return new Farmland(name, area, userId);
+    static Farmland create(String name, Float area, UUID ownerId) {
+        return new Farmland(name, area, ownerId);
     }
 
-    private Farmland(String name, Float area, Long userId) {
+    private Farmland(String name, Float area, UUID ownerId) {
         this.name = name;
         this.area = area;
-        this.userId = userId;
+        this.ownerId = ownerId;
     }
 
-    public void attachOwner(Long userId) {
-        this.userId = userId;
+    public void attachOwner(UUID userId) {
+        this.ownerId = userId;
     }
 
     public void changeGeometry(FarmlandGeometry geometry) {

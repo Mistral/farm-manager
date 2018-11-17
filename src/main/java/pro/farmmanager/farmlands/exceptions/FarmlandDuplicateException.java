@@ -1,5 +1,5 @@
 package pro.farmmanager.farmlands.exceptions;
 
-public class FarmlandDuplicateException extends Exception {
+public class FarmlandDuplicateException extends RuntimeException {
 
 }
