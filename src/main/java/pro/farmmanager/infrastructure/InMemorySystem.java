@@ -5,6 +5,8 @@ import pro.farmmanager.farmlands.FarmlandFacade;
 import pro.farmmanager.user.UserConfiguration;
 import pro.farmmanager.user.UserFacade;
 
+import java.util.UUID;
+
 public class InMemorySystem {
 
     private FarmlandFacade farmlandFacade;
@@ -13,11 +15,19 @@ public class InMemorySystem {
 
     public InMemorySystem() {
         userFacade = new UserConfiguration().userFacade();
-        farmlandFacade = new FarmlandConfiguration().farmlandFacade(userFacade);
+        farmlandFacade = new FarmlandConfiguration().farmlandFacade();
     }
 
     public FarmlandFacade getFarmlandFacade() {
         return farmlandFacade;
+    }
+
+    public UserFacade getUserFacade() {
+        return userFacade;
+    }
+
+    public UUID getCustomUserId() {
+        return UUID.randomUUID();
     }
 
 }
