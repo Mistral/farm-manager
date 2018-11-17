@@ -1,6 +1,8 @@
 package pro.farmmanager.farmlands;
 
+import pro.farmmanager.farmlands.dto.FarmlandDto;
 import pro.farmmanager.farmlands.exceptions.FarmlandInvalidParams;
+import pro.farmmanager.farmlands.exceptions.FarmlandNotFoundException;
 import pro.farmmanager.infrastructure.Repository;
 
 import java.util.Objects;
@@ -28,6 +30,17 @@ class FarmlandManager {
         farmlandRepository.save(farmland);
 
         return farmland.getId();
+    }
+
+    FarmlandDto findFarmlandById(UUID farmlandId) throws FarmlandNotFoundException {
+        return farmlandRepository.findById(farmlandId)
+                                 .map(Farmland::toDto)
+                                 .orElseThrow(FarmlandNotFoundException::new);
+    }
+
+    void archiveFarmland(UUID farmlandId) throws FarmlandNotFoundException {
+        Farmland farmland = farmlandRepository.findById(farmlandId).orElseThrow(FarmlandNotFoundException::new);
+        farmland.archive();
     }
 
 }

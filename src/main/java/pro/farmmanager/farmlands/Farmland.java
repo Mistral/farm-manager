@@ -24,7 +24,7 @@ class Farmland extends BaseEntity {
     @Enumerated
     private Season season = Season.S2018;
 
-    private boolean archive = false;
+    private boolean archived = false;
 
     static Farmland create(String name, Float area, UUID ownerId) {
         return new Farmland(name, area, ownerId);
@@ -36,36 +36,36 @@ class Farmland extends BaseEntity {
         this.ownerId = ownerId;
     }
 
-    public void attachOwner(UUID userId) {
+    void attachOwner(UUID userId) {
         this.ownerId = userId;
     }
 
-    public void changeGeometry(FarmlandGeometry geometry) {
+    void changeGeometry(FarmlandGeometry geometry) {
         this.geometry = geometry;
     }
 
-    public void archive() {
-        this.archive = true;
+    void archive() {
+        this.archived = true;
     }
 
-    public void restore() {
-        this.archive = false;
+    void restore() {
+        this.archived = false;
     }
 
-    public void moveToSeason(Season season) {
+    void moveToSeason(Season season) {
         this.season = season;
     }
 
-    public void changeArea(Float area) {
+    void changeArea(Float area) {
         this.area = area;
     }
 
-    public void rename(String name) {
+    void rename(String name) {
         this.name = name;
     }
 
-    public FarmlandDto toDto() {
-        return new FarmlandDto();
+    FarmlandDto toDto() {
+        return new FarmlandDto(name, area, ownerId, archived);
     }
 
 }
