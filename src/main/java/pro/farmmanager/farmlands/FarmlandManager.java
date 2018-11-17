@@ -1,10 +1,12 @@
 package pro.farmmanager.farmlands;
 
+import pro.farmmanager.infrastructure.Repository;
+
 class FarmlandManager {
 
-    private FarmlandRepository farmlandRepository;
+    private Repository<Farmland> farmlandRepository;
 
-    FarmlandManager(FarmlandRepository farmlandRepository) {
+    FarmlandManager(Repository<Farmland> farmlandRepository) {
         this.farmlandRepository = farmlandRepository;
     }
 
