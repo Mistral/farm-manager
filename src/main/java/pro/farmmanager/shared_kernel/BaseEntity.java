@@ -9,25 +9,22 @@ import java.util.UUID;
 public abstract class BaseEntity implements Serializable {
 
     @Id
-    @GeneratedValue
-    Long id;
-
-    String uuid = UUID.randomUUID().toString();
+    UUID id = UUID.randomUUID();
 
     @Version
     Integer version;
 
-    public Long getId() {
+    public UUID getId() {
         return this.id;
     }
 
     public int hashCode() {
-        return Objects.hash(uuid);
+        return Objects.hash(id);
     }
 
     public boolean equals(Object that) {
         return this == that || that instanceof BaseEntity
-            && Objects.equals(uuid, ((BaseEntity) that).uuid);
+            && Objects.equals(id, ((BaseEntity) that).id);
     }
 
 }
