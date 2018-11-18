@@ -19,6 +19,8 @@ variants. Each operations can use many resources. Operation has own unit cost (e
 addition operation which uses any resource should calculate used material's cost.
 It is possible to set dose (`Dose`) in OperationResource. For example we can use spraying product with fixed dose.
 
+More information about this feature is available [here](https://github.com/Mistral/farm-manager/wiki/Feature-Operation)
+
 ### Reports
 
 User can generate and see reports on each farmland. It can be personalized. List all operations done at this farmland
