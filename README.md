@@ -9,6 +9,8 @@ Farm Manager helps manage user's farm. It gives ability to store operations on f
 Each User can have unlimited farmlands. Farmlands have to be linked with `Season`. 
 Because User can change farmland's area, seeded crops in next season. 
 
+More information about this feature is available [here](wiki/Feature-Farmland)
+
 ### Operations
 
 Operations (`Operation`) are all activities planned, done, cancelled on a farmland. 
@@ -28,24 +30,6 @@ User can use manuring calculation to choose right manuring strategy.
 
 ### Warehouses
 User can have warehouses where are stored crops.
-
-## Endpoints
-
-#### Farmlands
-```$xslt
-GET /farmlands - get list of logged user farmlands,
-GET /farmlands/{id} - get farmland details,
-POST /farmlands - create new farmland,
-DELETE /farmlands/{id} - delete farmlands from database,
-PATCH /farmlands/{id} - update farmland's details,
-```
-
-#### Operations
-
-
-#### Warehouses
-
-#### Reports
 
 ## Prerequisites
 
