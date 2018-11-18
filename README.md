@@ -9,7 +9,7 @@ Farm Manager helps manage user's farm. It gives ability to store operations on f
 Each User can have unlimited farmlands. Farmlands have to be linked with `Season`. 
 Because User can change farmland's area, seeded crops in next season. 
 
-More information about this feature is available [here](wiki/Feature-Farmland)
+More information about this feature is available [here](https://github.com/Mistral/farm-manager/wiki/Feature-Farmland)
 
 ### Operations
 
