@@ -29,8 +29,25 @@ User can use manuring calculation to choose right manuring strategy.
 ### Warehouses
 User can have warehouses where are stored crops.
 
+## Endpoints
 
-### Prerequisites
+#### Farmlands
+```$xslt
+GET /farmlands - get list of logged user farmlands,
+GET /farmlands/{id} - get farmland details,
+POST /farmlands - create new farmland,
+DELETE /farmlands/{id} - delete farmlands from database,
+PATCH /farmlands/{id} - update farmland's details,
+```
+
+#### Operations
+
+
+#### Warehouses
+
+#### Reports
+
+## Prerequisites
 
 - Java 8
 
