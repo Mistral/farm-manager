@@ -35,4 +35,11 @@ public class FarmlandFacade {
                               .collect(Collectors.toList());
     }
 
+    public List<FarmlandDto> getFarmlands() {
+        return farmlandManager.getFarmlands()
+                              .stream()
+                              .map(Farmland::toDto)
+                              .collect(Collectors.toList());
+    }
+
 }
