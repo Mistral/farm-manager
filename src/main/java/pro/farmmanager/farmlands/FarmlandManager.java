@@ -28,7 +28,7 @@ class FarmlandManager {
             Objects.requireNonNull(name);
             Objects.requireNonNull(area);
             Objects.requireNonNull(ownerId);
-            return true;
+            return name.length() >= 3;
         }
         catch (NullPointerException ex) {
             return false;
