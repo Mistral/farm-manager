@@ -10,22 +10,6 @@ import java.util.List;
 @Entity
 class Operation extends BaseEntity {
 
-    public enum Type {
-        // OperationResource
-        SEEDING,
-        SPRAYING,
-        MANURING,
-
-        // Mechanical
-        HARVESTING,
-        LIMING, //wapnowanie
-        DISKING, // talerzowanie
-        ROLLING, // wałowanie
-        HARROWING, // bronowanie
-        PLOWING, // oranie
-        CULTIVATION, // uprawa
-    }
-
     public enum Status {
         PENDING,
         CANCELLED,
@@ -35,7 +19,7 @@ class Operation extends BaseEntity {
     private Long farmlandId;
 
     @Enumerated
-    private Type type;
+    private OperationType type;
 
     @Enumerated
     private Status status;

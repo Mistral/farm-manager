@@ -4,11 +4,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-class OperationConfiguration {
+public class OperationConfiguration {
 
     @Bean
-    public OperationFacade operationFacade(OperationRepository operationRepository) {
-        OperationManager operationManager = new OperationManager(operationRepository);
+    public OperationFacade operationFacade(SpringOperationRepository springOperationRepository) {
+        OperationRepository repository = new OperationSpringRepositoryAdapter(springOperationRepository);
+        OperationManager operationManager = new OperationManager(repository);
+        return new OperationFacade(operationManager);
+    }
+
+    public OperationFacade operationFacade() {
+        OperationRepository repository = new OperationInMemoryRepository();
+        OperationManager operationManager = new OperationManager(repository);
         return new OperationFacade(operationManager);
     }
 
