@@ -1,14 +1,8 @@
 package pro.farmmanager.farmlands;
 
 import io.vavr.control.Either;
-import pro.farmmanager.farmlands.dto.FarmlandDto;
-import pro.farmmanager.farmlands.exceptions.FarmlandInvalidParams;
-import pro.farmmanager.farmlands.exceptions.FarmlandNotFoundException;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 class FarmlandManager {
 
@@ -51,6 +45,10 @@ class FarmlandManager {
 
     List<Farmland> getFarmlandsForUser(UUID ownerId) {
         return farmlandRepository.findByOwnerId(ownerId);
+    }
+
+    List<Farmland> getFarmlands() {
+        return farmlandRepository.findAll();
     }
 
 }
