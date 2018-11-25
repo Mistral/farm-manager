@@ -15,13 +15,12 @@ public class OperationFacadeTest {
     private InMemorySystem system;
 
     @Before
-    void setUp() {
+    public void setUp() {
         system = new InMemorySystem();
         operationFacade = system.getOperationFacade();
     }
 
-    @Test
-    void shouldCreateOperationInFarmland() {
+    public void shouldCreateOperationInFarmland() {
         UUID farmlandId = UUID.randomUUID();
         UUID operationId = operationFacade.createOperation(farmlandId, OperationType.DISKING, new Money(25));
         assertNotNull(operationId);
