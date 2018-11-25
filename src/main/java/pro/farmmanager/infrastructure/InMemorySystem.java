@@ -20,7 +20,7 @@ public final class InMemorySystem {
     public InMemorySystem() {
         userFacade = new UserConfiguration().userFacade();
         farmlandFacade = new FarmlandConfiguration().farmlandFacade();
-        operationFacade = new OperationConfiguration().operationFacade();
+        operationFacade = new OperationConfiguration().operationFacade(farmlandFacade);
     }
 
     public FarmlandFacade getFarmlandFacade() {

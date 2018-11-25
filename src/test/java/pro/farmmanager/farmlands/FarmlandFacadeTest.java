@@ -3,7 +3,6 @@ package pro.farmmanager.farmlands;
 import org.junit.Before;
 import org.junit.Test;
 import pro.farmmanager.farmlands.dto.FarmlandDto;
-import pro.farmmanager.farmlands.exceptions.FarmlandInvalidParams;
 import pro.farmmanager.infrastructure.InMemorySystem;
 
 import java.util.List;
@@ -32,21 +31,21 @@ public class FarmlandFacadeTest {
 
     @Test
     public void shouldCreateFarmland() {
-        UUID farmlandId = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId);
+        UUID farmlandId = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId).get();
         assertNotNull(farmlandId);
     }
 
-    @Test(expected = FarmlandInvalidParams.class)
+    @Test
     public void shouldNotCreateFarmlandWithoutNameOrArea() {
-        UUID farmlandId = farmlandFacade.createFarmland(null, null, ownerId);
-        assertNull(farmlandId);
+        FarmlandError farmlandError = farmlandFacade.createFarmland(null, null, ownerId).left().get();
+        assertNotNull(farmlandError);
     }
 
     @Test
     public void shouldGetFarmlandWithDetails() {
-        UUID farmlandId = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId);
+        UUID farmlandId = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId).get();
 
-        FarmlandDto farmlandDto = farmlandFacade.getFarmlandById(farmlandId);
+        FarmlandDto farmlandDto = farmlandFacade.getFarmlandById(farmlandId).get();
 
         assertEquals(FARMLAND_NAME, farmlandDto.getName());
         assertEquals(FARMLAND_AREA, farmlandDto.getArea(), 0.0);
@@ -54,19 +53,19 @@ public class FarmlandFacadeTest {
 
     @Test
     public void shouldArchiveFarmland() {
-        UUID farmlandId = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId);
+        UUID farmlandId = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId).get();
 
         farmlandFacade.archiveFarmland(farmlandId);
 
-        FarmlandDto farmlandDto = farmlandFacade.getFarmlandById(farmlandId);
+        FarmlandDto farmlandDto = farmlandFacade.getFarmlandById(farmlandId).get();
 
         assertTrue(farmlandDto.isArchived());
     }
 
     @Test
     public void shouldGetFarmlands() {
-        UUID farmlandId1 = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId);
-        UUID farmlandId2 = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId);
+        UUID farmlandId1 = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId).get();
+        UUID farmlandId2 = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId).get();
 
         List<FarmlandDto> farmlands = farmlandFacade.getFarmlandsForUser(ownerId);
 
@@ -75,7 +74,7 @@ public class FarmlandFacadeTest {
 
     @Test
     public void shouldNotGetOtherUserFarmlands() {
-        UUID farmlandId = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId);
+        UUID farmlandId = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId).get();
 
         UUID otherUserId = UUID.randomUUID();
 
