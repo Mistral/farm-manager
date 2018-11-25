@@ -19,6 +19,7 @@ class Farmland extends BaseEntity {
 
     private Float area;
 
+    @Column( columnDefinition = "BINARY(16)", length = 16 )
     private UUID ownerId;
 
     @Enumerated
@@ -28,6 +29,10 @@ class Farmland extends BaseEntity {
 
     static Farmland create(String name, Float area, UUID ownerId) {
         return new Farmland(name, area, ownerId);
+    }
+
+    private Farmland() {
+
     }
 
     private Farmland(String name, Float area, UUID ownerId) {

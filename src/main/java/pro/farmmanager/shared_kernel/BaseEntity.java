@@ -9,6 +9,7 @@ import java.util.UUID;
 public abstract class BaseEntity implements Serializable {
 
     @Id
+    @Column(columnDefinition = "BINARY(16)", length = 16)
     UUID id = UUID.randomUUID();
 
     @Version
