@@ -5,7 +5,9 @@ import pro.farmmanager.shared_kernel.Money;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
 class Operation extends BaseEntity {
@@ -13,10 +15,11 @@ class Operation extends BaseEntity {
     public enum Status {
         PENDING,
         CANCELLED,
-        DONE;
+        DONE
     }
 
-    private Long farmlandId;
+    @Column(columnDefinition = "BINARY(16)", length = 16)
+    private UUID farmlandId;
 
     @Enumerated
     private OperationType type;
@@ -28,12 +31,12 @@ class Operation extends BaseEntity {
 
     private LocalDateTime doneAt;
 
-    private Double area;
+    @Transient
+    private Float area;
 
     @OneToMany
     @JoinColumn(name = "operation")
-    @OrderColumn
-    private List<OperationResource> resources;
+    private Set<OperationResource> resources = new HashSet<>();
 
     @Embedded
     private Money unitCost;
@@ -43,6 +46,16 @@ class Operation extends BaseEntity {
 
     @Transient
     private Money materialCost = Money.ZERO;
+
+    private Operation(UUID farmlandId, OperationType type, Money cost) {
+        this.farmlandId = farmlandId;
+        this.type = type;
+        this.unitCost = cost;
+    }
+
+    public static Operation create(UUID farmlandId, OperationType type, Money cost) {
+        return new Operation(farmlandId, type, cost);
+    }
 
     public void end() {
         this.status = Status.DONE;
@@ -59,7 +72,9 @@ class Operation extends BaseEntity {
         this.doneAt = LocalDateTime.now();
     }
 
-    private void recalculateCost() {
+    void calculateCost(Float area) {
+        this.area = area;
+
         operationCost = Money.ZERO;
         operationCost = operationCost.add(this.unitCost).multiplyBy(this.area);
 
@@ -82,7 +97,15 @@ class Operation extends BaseEntity {
 
     public void useResource(OperationResource operationResource) {
         this.resources.add(operationResource);
-        recalculateCost();
+        calculateCost(this.area);
+    }
+
+    public UUID getFarmlandId() {
+        return farmlandId;
+    }
+
+    public OperationDto toDto() {
+        return new OperationDto(farmlandId, type, unitCost, operationCost.add(materialCost), operationCost, materialCost);
     }
 
 }
