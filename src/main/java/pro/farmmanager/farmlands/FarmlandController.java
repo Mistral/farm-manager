@@ -1,7 +1,5 @@
 package pro.farmmanager.farmlands;
 
-import io.vavr.control.Either;
-import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -12,7 +10,6 @@ import pro.farmmanager.farmlands.dto.FarmlandDto;
 import pro.farmmanager.user.UserFacade;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -31,29 +28,22 @@ public class FarmlandController {
 
     @GetMapping("/{farmlandId}")
     HttpEntity<FarmlandDto> getFarmland(@PathVariable UUID farmlandId) {
-        Option<FarmlandDto> farmlandDto = farmlandFacade.getFarmlandById(farmlandId);
-
-        if (farmlandDto.isDefined()) {
-            return new ResponseEntity<>(farmlandDto.get(), HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return farmlandFacade.getFarmlandById(farmlandId)
+                             .map(farmland -> new ResponseEntity<>(farmland, HttpStatus.OK))
+                             .getOrElse(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping
     HttpEntity<List<FarmlandDto>> getFarmlandsForUser() {
-        List<FarmlandDto> farmlandDtos = farmlandFacade.getFarmlandsForUser(UserFacade.authorizedId);
-        return new ResponseEntity<>(farmlandDtos, HttpStatus.OK);
+        List<FarmlandDto> farmlands = farmlandFacade.getFarmlandsForUser(UserFacade.authorizedId);
+        return new ResponseEntity<>(farmlands, HttpStatus.OK);
     }
 
     @PostMapping
     HttpEntity<String> createFarmland(@RequestBody FarmlandCreateRequest farmlandCreateRequest) {
-        Either<FarmlandError, UUID> farmlandId = farmlandFacade
-            .createFarmland(farmlandCreateRequest.getName(), farmlandCreateRequest.getArea(), UserFacade.authorizedId);
-
-        return farmlandId.map(f -> new ResponseEntity<>(f.toString(), HttpStatus.CREATED))
-                         .getOrElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        return farmlandFacade.createFarmland(farmlandCreateRequest.getName(), farmlandCreateRequest.getArea(), UserFacade.authorizedId)
+                             .map(f -> new ResponseEntity<>(f.toString(), HttpStatus.CREATED))
+                             .getOrElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
 }
