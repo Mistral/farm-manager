@@ -5,7 +5,6 @@ import io.vavr.control.Option;
 import pro.farmmanager.farmlands.dto.FarmlandDto;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -18,11 +17,13 @@ public class FarmlandFacade {
     }
 
     public Either<FarmlandError, UUID> createFarmland(String name, Float area, UUID ownerId) {
-        return farmlandManager.createFarmland(name, area, ownerId).map(Farmland::getId);
+        return farmlandManager.createFarmland(name, area, ownerId)
+                              .map(Farmland::getId);
     }
 
     public Option<FarmlandDto> getFarmlandById(UUID farmlandId) {
-        return farmlandManager.findFarmlandById(farmlandId).map(Farmland::toDto);
+        return farmlandManager.findFarmlandById(farmlandId)
+                              .map(Farmland::toDto);
     }
 
     public void archiveFarmland(UUID farmlandId) {
