@@ -19,7 +19,7 @@ class Farmland extends BaseEntity {
 
     private Float area;
 
-    @Column( columnDefinition = "BINARY(16)", length = 16 )
+    @Column(columnDefinition = "BINARY(16)", length = 16)
     private UUID ownerId;
 
     @Enumerated
@@ -74,7 +74,7 @@ class Farmland extends BaseEntity {
     }
 
     FarmlandDto toDto() {
-        return new FarmlandDto(name, area, ownerId, archived);
+        return new FarmlandDto(getId(), name, area, ownerId, archived);
     }
 
 }

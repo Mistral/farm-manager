@@ -1,6 +1,7 @@
 package pro.farmmanager.farmlands;
 
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 
 import java.util.*;
 
@@ -35,12 +36,12 @@ class FarmlandManager {
         }
     }
 
-    Optional<Farmland> findFarmlandById(UUID farmlandId) {
-        return farmlandRepository.findById(farmlandId);
+    Option<Farmland> findFarmlandById(UUID farmlandId) {
+        return Option.ofOptional(farmlandRepository.findById(farmlandId));
     }
 
     void archiveFarmland(UUID farmlandId) {
-        findFarmlandById(farmlandId).ifPresent(Farmland::archive);
+        findFarmlandById(farmlandId).peek(Farmland::archive);
     }
 
     List<Farmland> getFarmlandsForUser(UUID ownerId) {

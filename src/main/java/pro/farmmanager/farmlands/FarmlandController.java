@@ -1,6 +1,7 @@
 package pro.farmmanager.farmlands;
 
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -30,9 +31,9 @@ public class FarmlandController {
 
     @GetMapping("/{farmlandId}")
     HttpEntity<FarmlandDto> getFarmland(@PathVariable UUID farmlandId) {
-        Optional<FarmlandDto> farmlandDto = farmlandFacade.getFarmlandById(farmlandId);
+        Option<FarmlandDto> farmlandDto = farmlandFacade.getFarmlandById(farmlandId);
 
-        if (farmlandDto.isPresent()) {
+        if (farmlandDto.isDefined()) {
             return new ResponseEntity<>(farmlandDto.get(), HttpStatus.OK);
         }
         else {

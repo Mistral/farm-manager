@@ -4,19 +4,26 @@ import java.util.UUID;
 
 public class FarmlandDto {
 
-    final private String name;
+    private final UUID id;
 
-    final private Float area;
+    private final String name;
 
-    final private UUID ownerId;
+    private final Float area;
 
-    final private boolean archived;
+    private final UUID ownerId;
 
-    public FarmlandDto(String name, Float area, UUID ownerId, boolean archived) {
+    private final boolean archived;
+
+    public FarmlandDto(UUID id, String name, Float area, UUID ownerId, boolean archived) {
+        this.id = id;
         this.name = name;
         this.area = area;
         this.ownerId = ownerId;
         this.archived = archived;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {

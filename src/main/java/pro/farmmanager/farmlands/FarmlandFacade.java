@@ -1,6 +1,7 @@
 package pro.farmmanager.farmlands;
 
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 import pro.farmmanager.farmlands.dto.FarmlandDto;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class FarmlandFacade {
         return farmlandManager.createFarmland(name, area, ownerId).map(Farmland::getId);
     }
 
-    public Optional<FarmlandDto> getFarmlandById(UUID farmlandId) {
+    public Option<FarmlandDto> getFarmlandById(UUID farmlandId) {
         return farmlandManager.findFarmlandById(farmlandId).map(Farmland::toDto);
     }
 

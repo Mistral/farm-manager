@@ -74,8 +74,6 @@ public class FarmlandFacadeTest {
 
     @Test
     public void shouldNotGetOtherUserFarmlands() {
-        UUID farmlandId = farmlandFacade.createFarmland(FARMLAND_NAME, FARMLAND_AREA, ownerId).get();
-
         UUID otherUserId = UUID.randomUUID();
 
         List<FarmlandDto> farmlands = farmlandFacade.getFarmlandsForUser(otherUserId);
