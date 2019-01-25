@@ -8,12 +8,6 @@ import java.util.List;
 @Entity
 class Resource extends BaseEntity {
 
-    public enum Type {
-        CHEMISTRY,
-        FERTILIZERS,
-        SEEDS
-    }
-
     private String name;
 
     private String description;
@@ -23,6 +17,10 @@ class Resource extends BaseEntity {
     private List<ResourceVariant> variants;
 
     @Enumerated
-    private Type type;
+    private ResourceType type;
+
+    static Resource from(ResourceDto resource) {
+        return null;
+    }
 
 }

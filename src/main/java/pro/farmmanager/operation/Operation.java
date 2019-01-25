@@ -6,8 +6,10 @@ import pro.farmmanager.shared_kernel.Money;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 class Operation extends BaseEntity {
@@ -15,7 +17,7 @@ class Operation extends BaseEntity {
     public enum Status {
         PENDING,
         CANCELLED,
-        DONE
+        DONE;
     }
 
     @Column(columnDefinition = "BINARY(16)", length = 16)
@@ -31,9 +33,6 @@ class Operation extends BaseEntity {
 
     private LocalDateTime doneAt;
 
-    @Transient
-    private Float area;
-
     @OneToMany
     @JoinColumn(name = "operation")
     private Set<OperationResource> resources = new HashSet<>();
@@ -47,6 +46,20 @@ class Operation extends BaseEntity {
     @Transient
     private Money materialCost = Money.ZERO;
 
+    @Transient
+    private Float area;
+
+    private Operation(UUID farmlandId, OperationType type, Money cost, List<OperationResourceDto> resources) {
+        this.farmlandId = farmlandId;
+        this.type = type;
+        this.unitCost = cost;
+
+        List<OperationResource> operationResources = resources.stream()
+                                                              .map(OperationResource::fromDto)
+                                                              .collect(Collectors.toList());
+        this.resources.addAll(operationResources);
+    }
+
     private Operation(UUID farmlandId, OperationType type, Money cost) {
         this.farmlandId = farmlandId;
         this.type = type;
@@ -55,6 +68,10 @@ class Operation extends BaseEntity {
 
     public static Operation create(UUID farmlandId, OperationType type, Money cost) {
         return new Operation(farmlandId, type, cost);
+    }
+
+    public static Operation createWithResource(UUID farmlandId, OperationType type, Money unitCost, List<OperationResourceDto> resources) {
+        return new Operation(farmlandId, type, unitCost, resources);
     }
 
     public void end() {
@@ -105,7 +122,11 @@ class Operation extends BaseEntity {
     }
 
     public OperationDto toDto() {
-        return new OperationDto(farmlandId, type, unitCost, operationCost.add(materialCost), operationCost, materialCost);
+        Set<OperationResourceDto> operationResources = resources.stream()
+                                                                .map(OperationResource::toDto)
+                                                                .collect(Collectors.toSet());
+
+        return new OperationDto(farmlandId, type, unitCost, operationCost.add(materialCost), operationCost, materialCost, operationResources);
     }
 
 }

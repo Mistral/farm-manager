@@ -2,6 +2,8 @@ package pro.farmmanager.operation;
 
 import pro.farmmanager.shared_kernel.Money;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class OperationDto {
@@ -18,13 +20,16 @@ public class OperationDto {
 
     private OperationType type;
 
-    OperationDto(UUID farmlandId, OperationType type, Money unitCost, Money totalCost, Money operationCost, Money resourceCost) {
+    private Set<OperationResourceDto> resources = new LinkedHashSet<>();
+
+    OperationDto(UUID farmlandId, OperationType type, Money unitCost, Money totalCost, Money operationCost, Money resourceCost, Set<OperationResourceDto> resources) {
         this.farmlandId = farmlandId;
         this.type = type;
         this.unitCost = unitCost;
         this.totalCost = totalCost;
         this.operationCost = operationCost;
         this.resourceCost = resourceCost;
+        this.resources.addAll(resources);
     }
 
     UUID getFarmlandId() {
@@ -49,6 +54,10 @@ public class OperationDto {
 
     public Money getResourceCost() {
         return resourceCost;
+    }
+
+    public Set<OperationResourceDto> getResources() {
+        return resources;
     }
 
 }

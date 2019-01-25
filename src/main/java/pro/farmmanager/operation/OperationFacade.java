@@ -2,6 +2,7 @@ package pro.farmmanager.operation;
 
 import io.vavr.control.Either;
 import io.vavr.control.Option;
+import pro.farmmanager.operation.dto.NewOperationResourceDto;
 import pro.farmmanager.shared_kernel.Money;
 
 import java.util.List;
@@ -17,11 +18,13 @@ public class OperationFacade {
     }
 
     public Either<OperationError, UUID> createOperation(UUID farmlandId, OperationType type, Money cost) {
-        return operationManager.createOperation(farmlandId, type, cost).map(Operation::getId);
+        return operationManager.createOperation(farmlandId, type, cost)
+                               .map(Operation::getId);
     }
 
     public Option<OperationDto> getOperationById(UUID operationId) {
-        return operationManager.getOperationById(operationId).map(Operation::toDto);
+        return operationManager.getOperationById(operationId)
+                               .map(Operation::toDto);
     }
 
     public List<OperationDto> getOperations(UUID farmlandId) {
@@ -29,6 +32,11 @@ public class OperationFacade {
                                .stream()
                                .map(Operation::toDto)
                                .collect(Collectors.toList());
+    }
+
+    public Either<OperationError, UUID> createResourceOperation(UUID farmlandId, OperationType type, Money unitCost, List<NewOperationResourceDto> resources) {
+        return operationManager.createResourceOperation(farmlandId, type, unitCost, resources)
+                               .map(Operation::getId);
     }
 
 }

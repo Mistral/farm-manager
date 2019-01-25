@@ -4,9 +4,12 @@ import org.junit.Before;
 import org.junit.Test;
 import pro.farmmanager.farmlands.FarmlandFacade;
 import pro.farmmanager.infrastructure.InMemorySystem;
+import pro.farmmanager.operation.dto.NewOperationResourceDto;
+import pro.farmmanager.shared_kernel.Dose;
 import pro.farmmanager.shared_kernel.Money;
 import pro.farmmanager.user.UserFacade;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,6 +22,8 @@ public class OperationFacadeTest {
     private FarmlandFacade farmlandFacade;
 
     private UserFacade userFacade;
+
+    private ResourceFacade resourceFacade;
 
     private InMemorySystem system;
 
@@ -80,6 +85,23 @@ public class OperationFacadeTest {
         assertEquals(operation.getUnitCost(), new Money(25));
         assertEquals(operation.getTotalCost(), new Money(25).multiplyBy(2));
         assertEquals(operation.getOperationCost(), new Money(25).multiplyBy(2));
+    }
+
+    @Test
+    public void shouldCalculateOperationCostWithSomeResource() {
+        UUID farmlandId = createFarmland();
+
+        UUID resourceId1 = resourceFacade.createResource("Example Product 1", "Example description 1", ResourceType.CHEMISTRY).get();
+        UUID resourceId2 = resourceFacade.createResource("Example Product 2", "Example description 2", ResourceType.FERTILIZERS).get();
+
+        List<NewOperationResourceDto> resources = new ArrayList<>();
+        resources.add(NewOperationResourceDto.create(resourceId1, Dose.ofLiteres(2.5d), new Money(25)));
+        resources.add(NewOperationResourceDto.create(resourceId2, Dose.ofKilograms(5d), new Money(50)));
+
+
+        UUID operationId = operationFacade.createResourceOperation(farmlandId, OperationType.SPRAYING, new Money(10), resources).get();
+
+        OperationDto operation = operationFacade.getOperationById(operationId).get();
     }
 
 }
