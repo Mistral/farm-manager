@@ -21,13 +21,14 @@ class OperationManager {
     }
 
     Either<OperationError, Operation> createOperation(UUID farmlandId, OperationType type, Money cost) {
-        if (farmlandFacade.getFarmlandById(farmlandId).isDefined()) {
-            Operation operation = Operation.create(farmlandId, type, cost);
-            operationRepository.save(operation);
-            calculateOperationCost(operation);
-            return Either.right(operation);
-        }
-        return Either.left(OperationError.INVALID_FARMLAND);
+        return farmlandFacade.getFarmlandById(farmlandId)
+                             .map(farmlandDto -> {
+                                 Operation operation = Operation.create(farmlandId, type, cost);
+                                 operationRepository.save(operation);
+                                 calculateOperationCost(operation);
+                                 return operation;
+                             })
+                             .toEither(OperationError.INVALID_FARMLAND);
     }
 
     Option<Operation> getOperationById(UUID operationId) {
@@ -39,8 +40,21 @@ class OperationManager {
     }
 
     private void calculateOperationCost(Operation operation) {
-        Float area = farmlandFacade.getFarmlandById(operation.getFarmlandId()).map(FarmlandDto::getArea).get();
+        Float area = farmlandFacade.getFarmlandById(operation.getFarmlandId())
+                                   .map(FarmlandDto::getArea)
+                                   .get();
         operation.calculateCost(area);
+    }
+
+    Either<OperationError, Operation> createResourceOperation(UUID farmlandId, OperationType type, Money unitCost, List<OperationResourceDto> resources) {
+        return farmlandFacade.getFarmlandById(farmlandId)
+                             .map(farmlandDto -> {
+                                 Operation operation = Operation.createWithResource(farmlandId, type, unitCost, resources);
+                                 operationRepository.save(operation);
+                                 calculateOperationCost(operation);
+                                 return operation;
+                             })
+                             .toEither(OperationError.INVALID_FARMLAND);
     }
 
 }

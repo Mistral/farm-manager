@@ -10,8 +10,39 @@ public class Dose {
         TONS
     }
 
-    private Double value;
+    public final static Dose ZERO = of(0d, Unit.LITERES);
 
-    private Unit unit;
+    private final Double value;
+
+    private final Unit unit;
+
+    public static Dose of(Double value, Unit unit) {
+        return new Dose(value, unit);
+    }
+
+    public static Dose ofMililitres(Double value) {
+        return new Dose(value, Unit.MILILITRES);
+    }
+
+    public static Dose ofLiteres(Double value) {
+        return new Dose(value, Unit.LITERES);
+    }
+
+    public static Dose ofGrams(Double value) {
+        return new Dose(value, Unit.GRAMS);
+    }
+
+    public static Dose ofKilograms(Double value) {
+        return new Dose(value, Unit.KILOGRAMS);
+    }
+
+    public static Dose ofTons(Double value) {
+        return new Dose(value, Unit.TONS);
+    }
+
+    private Dose(Double value, Unit unit) {
+        this.value = value;
+        this.unit = unit;
+    }
 
 }

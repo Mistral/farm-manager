@@ -21,32 +21,36 @@ class OperationResource extends BaseEntity {
     @Embedded
     private final Dose dose;
 
-    static public OperationResource create(Resource resource) {
+    public static OperationResource create(Resource resource) {
         return new OperationResource(resource, null, null, Money.ZERO);
     }
 
-    static public OperationResource createWithVariant(Resource resource, ResourceVariant variant) {
+    public static OperationResource createWithVariant(Resource resource, ResourceVariant variant) {
         return new OperationResource(resource, variant, null, Money.ZERO);
     }
 
-    static public OperationResource createWithDose(Resource resource, Dose dose) {
+    public static OperationResource createWithDose(Resource resource, Dose dose) {
         return new OperationResource(resource, null, dose, Money.ZERO);
     }
 
-    static public OperationResource createWithMoney(Resource resource, Money money) {
+    public static OperationResource createWithMoney(Resource resource, Money money) {
         return new OperationResource(resource, null, null, money);
     }
 
-    static public OperationResource createWithDoseAndMoney(Resource resource, Money money, Dose dose) {
+    public static OperationResource createWithDoseAndMoney(Resource resource, Money money, Dose dose) {
         return new OperationResource(resource, null, dose, money);
     }
 
-    static public OperationResource createWithVariantAndMoney(Resource resource, ResourceVariant variant, Money money) {
+    public static OperationResource createWithVariantAndMoney(Resource resource, ResourceVariant variant, Money money) {
         return new OperationResource(resource, variant, null, money);
     }
 
-    static public OperationResource createWithVariantAndMoneyAndDose(Resource resource, ResourceVariant variant, Money money, Dose dose) {
+    public static OperationResource createWithVariantAndMoneyAndDose(Resource resource, ResourceVariant variant, Money money, Dose dose) {
         return new OperationResource(resource, variant, dose, money);
+    }
+
+    public static OperationResource fromDto(OperationResourceDto dto) {
+        return new OperationResource(Resource.from(dto.getResource()), ResourceVariant.from(dto.getVariant()), dto.getDose(), dto.getUnitCost());
     }
 
     private OperationResource(Resource resource, ResourceVariant variant, Dose dose, Money money) {
@@ -58,6 +62,10 @@ class OperationResource extends BaseEntity {
 
     public Money getUnitCost() {
         return this.unitCost;
+    }
+
+    public OperationResourceDto toDto() {
+        return new OperationResourceDto(id, operationId, resource, variant, dose, unitCost, totalCost);
     }
 
 }
