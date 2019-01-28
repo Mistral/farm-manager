@@ -7,9 +7,9 @@ import java.util.UUID;
 
 class OperationSpringRepositoryAdapter extends SpringRepositoryAdapter<Operation> implements OperationRepository {
 
-    private SpringOperationRepository repository;
+    private OperationSpringRepository repository;
 
-    public OperationSpringRepositoryAdapter(SpringOperationRepository repository) {
+    public OperationSpringRepositoryAdapter(OperationSpringRepository repository) {
         super(repository);
         this.repository = repository;
     }

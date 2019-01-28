@@ -7,8 +7,15 @@ import org.springframework.context.annotation.Configuration;
 public class ResourceConfiguration {
 
     @Bean
+    public ResourceFacade resourceFacade(ResourceSpringRepository springRepository, ResourceVariantSpringRepository resourceVariantSpringRepository) {
+        ResourceRepository repository = new ResourceSpringRepositoryAdapter(springRepository);
+        ResourceManager resourceManager = new ResourceManager(repository);
+        return new ResourceFacade(resourceManager);
+    }
+
     public ResourceFacade resourceFacade() {
-        ResourceManager resourceManager = new ResourceManager();
+        ResourceRepository repository = new ResourceInMemoryRepository();
+        ResourceManager resourceManager = new ResourceManager(repository);
         return new ResourceFacade(resourceManager);
     }
 

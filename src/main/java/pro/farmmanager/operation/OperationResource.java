@@ -1,5 +1,7 @@
 package pro.farmmanager.operation;
 
+import pro.farmmanager.operation.dto.NewOperationResourceDto;
+import pro.farmmanager.operation.dto.NewResourceVariantDto;
 import pro.farmmanager.shared_kernel.BaseEntity;
 import pro.farmmanager.shared_kernel.Dose;
 import pro.farmmanager.shared_kernel.Money;
@@ -27,6 +29,10 @@ class OperationResource extends BaseEntity {
 
     public static OperationResource createWithVariant(Resource resource, ResourceVariant variant) {
         return new OperationResource(resource, variant, null, Money.ZERO);
+    }
+
+    public static OperationResource create(Resource resource, ResourceVariant variant, NewOperationResourceDto operationResourceDto) {
+        return new OperationResource(resource, variant, operationResourceDto.getDose(), operationResourceDto.getUnitCost());
     }
 
     public static OperationResource createWithDose(Resource resource, Dose dose) {
@@ -60,12 +66,17 @@ class OperationResource extends BaseEntity {
         this.unitCost = money;
     }
 
+    //    static OperationResource createFrom(NewOperationResourceDto resourceDto) {
+    //        return new OperationResource(resourceDto.getResourceId());
+    //    }
+
     public Money getUnitCost() {
         return this.unitCost;
     }
 
     public OperationResourceDto toDto() {
-        return new OperationResourceDto(id, operationId, resource, variant, dose, unitCost, totalCost);
+        //        return new OperationResourceDto(id, operationId, resource, variant, dose, unitCost, totalCost);
+        return null;
     }
 
 }

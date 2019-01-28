@@ -1,10 +1,10 @@
 package pro.farmmanager.infrastructure;
 
+import io.vavr.control.Option;
 import pro.farmmanager.shared_kernel.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,8 +29,8 @@ public class InMemoryRepository<T extends BaseEntity> implements Repository<T> {
     }
 
     @Override
-    final public Optional<T> findById(UUID uuid) {
-        return Optional.ofNullable(map.get(uuid));
+    final public Option<T> findById(UUID uuid) {
+        return Option.of(map.get(uuid));
     }
 
     @Override
