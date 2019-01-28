@@ -4,10 +4,13 @@ import io.vavr.control.Either;
 import io.vavr.control.Option;
 import pro.farmmanager.farmlands.FarmlandFacade;
 import pro.farmmanager.farmlands.dto.FarmlandDto;
+import pro.farmmanager.operation.dto.NewOperationResourceDto;
 import pro.farmmanager.shared_kernel.Money;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 class OperationManager {
 
@@ -15,9 +18,12 @@ class OperationManager {
 
     private final FarmlandFacade farmlandFacade;
 
-    OperationManager(OperationRepository operationRepository, FarmlandFacade farmlandFacade) {
+    private final ResourceFacade resourceFacade;
+
+    OperationManager(OperationRepository operationRepository, FarmlandFacade farmlandFacade, ResourceFacade resourceFacade) {
         this.operationRepository = operationRepository;
         this.farmlandFacade = farmlandFacade;
+        this.resourceFacade = resourceFacade;
     }
 
     Either<OperationError, Operation> createOperation(UUID farmlandId, OperationType type, Money cost) {
@@ -32,7 +38,7 @@ class OperationManager {
     }
 
     Option<Operation> getOperationById(UUID operationId) {
-        return Option.ofOptional(operationRepository.findById(operationId));
+        return operationRepository.findById(operationId);
     }
 
     List<Operation> getOperationsByFarmlandId(UUID farmlandId) {
@@ -46,10 +52,29 @@ class OperationManager {
         operation.calculateCost(area);
     }
 
-    Either<OperationError, Operation> createResourceOperation(UUID farmlandId, OperationType type, Money unitCost, List<OperationResourceDto> resources) {
+    Either<OperationError, Operation> createResourceOperation(UUID farmlandId, OperationType type, Money unitCost, List<NewOperationResourceDto> resources) {
+        List<OperationResource> operationResources;
+        operationResources = resources.stream()
+                                      .map(resourceDto -> {
+                                          Option<Resource> resource = resourceFacade
+                                              .findResourceById(resourceDto.getResourceId());
+                                          Option<ResourceVariant> resourceVariant = resourceFacade
+                                              .findResourceVariantById(resourceDto.getVariantId());
+                                          if (resource.isDefined() && resourceVariant.isDefined()) {
+                                              return OperationResource
+                                                  .create(resource.get(), resourceVariant.get(), resourceDto);
+                                          }
+                                          return null;
+                                      })
+                                      .filter(Objects::nonNull)
+                                      .collect(Collectors.toList());
+        if (operationResources.size() != resources.size()) {
+            return Either.left(OperationError.INVALID_DATA);
+        }
+
         return farmlandFacade.getFarmlandById(farmlandId)
                              .map(farmlandDto -> {
-                                 Operation operation = Operation.createWithResource(farmlandId, type, unitCost, resources);
+                                 Operation operation = Operation.createWithResource(farmlandId, type, unitCost, operationResources);
                                  operationRepository.save(operation);
                                  calculateOperationCost(operation);
                                  return operation;

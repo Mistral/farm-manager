@@ -49,42 +49,34 @@ class Operation extends BaseEntity {
     @Transient
     private Float area;
 
-    private Operation(UUID farmlandId, OperationType type, Money cost, List<OperationResourceDto> resources) {
-        this.farmlandId = farmlandId;
-        this.type = type;
-        this.unitCost = cost;
-
-        List<OperationResource> operationResources = resources.stream()
-                                                              .map(OperationResource::fromDto)
-                                                              .collect(Collectors.toList());
-        this.resources.addAll(operationResources);
+    static Operation create(UUID farmlandId, OperationType type, Money cost) {
+        return new Operation(farmlandId, type, cost, null);
     }
 
-    private Operation(UUID farmlandId, OperationType type, Money cost) {
-        this.farmlandId = farmlandId;
-        this.type = type;
-        this.unitCost = cost;
-    }
-
-    public static Operation create(UUID farmlandId, OperationType type, Money cost) {
-        return new Operation(farmlandId, type, cost);
-    }
-
-    public static Operation createWithResource(UUID farmlandId, OperationType type, Money unitCost, List<OperationResourceDto> resources) {
+    static Operation createWithResource(UUID farmlandId, OperationType type, Money unitCost, List<OperationResource> resources) {
         return new Operation(farmlandId, type, unitCost, resources);
     }
 
-    public void end() {
+    private Operation(UUID farmlandId, OperationType type, Money cost, List<OperationResource> resources) {
+        this.farmlandId = farmlandId;
+        this.type = type;
+        this.unitCost = cost;
+        if (resources != null) {
+            this.resources.addAll(resources);
+        }
+    }
+
+    void end() {
         this.status = Status.DONE;
         this.doneAt = LocalDateTime.now();
     }
 
-    public void planAt(LocalDateTime plannedDate) {
+    void planAt(LocalDateTime plannedDate) {
         this.plannedAt = plannedDate;
         this.status = Status.PENDING;
     }
 
-    public void cancel() {
+    void cancel() {
         this.status = Status.CANCELLED;
         this.doneAt = LocalDateTime.now();
     }
@@ -100,28 +92,28 @@ class Operation extends BaseEntity {
         materialCost = materialCost.multiplyBy(this.area);
     }
 
-    public Money getOperationCost() {
+    Money getOperationCost() {
         return operationCost;
     }
 
-    public Money getMaterialCost() {
+    Money getMaterialCost() {
         return materialCost;
     }
 
-    public Money getTotalCost() {
+    Money getTotalCost() {
         return operationCost.add(materialCost);
     }
 
-    public void useResource(OperationResource operationResource) {
+    void useResource(OperationResource operationResource) {
         this.resources.add(operationResource);
         calculateCost(this.area);
     }
 
-    public UUID getFarmlandId() {
+    UUID getFarmlandId() {
         return farmlandId;
     }
 
-    public OperationDto toDto() {
+    OperationDto toDto() {
         Set<OperationResourceDto> operationResources = resources.stream()
                                                                 .map(OperationResource::toDto)
                                                                 .collect(Collectors.toSet());

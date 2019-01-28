@@ -1,9 +1,9 @@
 package pro.farmmanager.infrastructure;
 
+import io.vavr.control.Option;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class SpringRepositoryAdapter<T> implements Repository<T> {
@@ -30,8 +30,8 @@ public class SpringRepositoryAdapter<T> implements Repository<T> {
     }
 
     @Override
-    final public Optional<T> findById(UUID uuid) {
-        return repository.findById(uuid);
+    final public Option<T> findById(UUID uuid) {
+        return Option.ofOptional(repository.findById(uuid));
     }
 
     @Override
@@ -56,7 +56,7 @@ public class SpringRepositoryAdapter<T> implements Repository<T> {
 
     @Override
     final public void update(UUID uuid, T t) {
-        findById(uuid).ifPresent(this::update);
+        findById(uuid).peek(this::update);
     }
 
 }

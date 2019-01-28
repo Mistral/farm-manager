@@ -1,7 +1,8 @@
 package pro.farmmanager.infrastructure;
 
+import io.vavr.control.Option;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface Repository<T> {
@@ -12,7 +13,7 @@ public interface Repository<T> {
 
     void saveAll(Iterable<T> t);
 
-    Optional<T> findById(UUID uuid);
+    Option<T> findById(UUID uuid);
 
     List<T> findAll();
 

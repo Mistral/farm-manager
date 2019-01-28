@@ -8,15 +8,15 @@ import pro.farmmanager.farmlands.FarmlandFacade;
 public class OperationConfiguration {
 
     @Bean
-    public OperationFacade operationFacade(SpringOperationRepository springOperationRepository, FarmlandFacade farmlandFacade) {
-        OperationRepository repository = new OperationSpringRepositoryAdapter(springOperationRepository);
-        OperationManager operationManager = new OperationManager(repository, farmlandFacade);
+    public OperationFacade operationFacade(OperationSpringRepository operationSpringRepository, FarmlandFacade farmlandFacade, ResourceFacade resourceFacade) {
+        OperationRepository repository = new OperationSpringRepositoryAdapter(operationSpringRepository);
+        OperationManager operationManager = new OperationManager(repository, farmlandFacade, resourceFacade);
         return new OperationFacade(operationManager);
     }
 
-    public OperationFacade operationFacade(FarmlandFacade farmlandFacade) {
+    public OperationFacade operationFacade(FarmlandFacade farmlandFacade, ResourceFacade resourceFacade) {
         OperationRepository repository = new OperationInMemoryRepository();
-        OperationManager operationManager = new OperationManager(repository, farmlandFacade);
+        OperationManager operationManager = new OperationManager(repository, farmlandFacade, resourceFacade);
         return new OperationFacade(operationManager);
     }
 

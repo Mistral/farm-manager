@@ -37,7 +37,7 @@ class FarmlandManager {
     }
 
     Option<Farmland> findFarmlandById(UUID farmlandId) {
-        return Option.ofOptional(farmlandRepository.findById(farmlandId));
+        return farmlandRepository.findById(farmlandId);
     }
 
     void archiveFarmland(UUID farmlandId) {
