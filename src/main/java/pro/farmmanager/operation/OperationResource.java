@@ -21,7 +21,7 @@ class OperationResource extends BaseEntity {
     private Money unitCost;
 
     @Embedded
-    private final Dose dose;
+    private Dose dose;
 
     public static OperationResource create(Resource resource) {
         return new OperationResource(resource, null, null, Money.ZERO);
@@ -68,6 +68,10 @@ class OperationResource extends BaseEntity {
         this.variant = variant;
         this.dose = dose;
         this.unitCost = money;
+    }
+
+    private OperationResource() {
+
     }
 
     //    static OperationResource createFrom(NewOperationResourceDto resourceDto) {

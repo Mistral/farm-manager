@@ -20,6 +20,10 @@ class ResourceVariant extends BaseEntity {
         return new ResourceVariant(variant.getName(), variant.getDescription());
     }
 
+    private ResourceVariant() {
+        
+    }
+
     private ResourceVariant(String name, String description) {
         this.name = name;
         this.description = description;

@@ -41,6 +41,10 @@ class Resource extends BaseEntity {
         }
     }
 
+    private Resource() {
+
+    }
+
     String getName() {
         return name;
     }
