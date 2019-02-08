@@ -27,8 +27,12 @@ class OperationResource extends BaseEntity {
         return new OperationResource(resource, null, null, Money.ZERO);
     }
 
-    public static OperationResource createWithVariant(Resource resource, ResourceVariant variant) {
-        return new OperationResource(resource, variant, null, Money.ZERO);
+    public static OperationResource createWithoutVariant(Resource resource, NewOperationResourceDto operationResourceDto) {
+        return new OperationResource(resource, null, operationResourceDto.getDose(), operationResourceDto.getUnitCost());
+    }
+
+    public static OperationResource createWithVariant(Resource resource, ResourceVariant variant, NewOperationResourceDto operationResourceDto) {
+        return create(resource, variant, operationResourceDto);
     }
 
     public static OperationResource create(Resource resource, ResourceVariant variant, NewOperationResourceDto operationResourceDto) {

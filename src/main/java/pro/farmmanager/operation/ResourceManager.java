@@ -46,10 +46,8 @@ class ResourceManager {
                        .collect(Collectors.toList());
     }
 
-    Either<ResourceError, String> resourceNameAvailable(String name) {
-        return resourceRepository.findByName(name)
-                                 .map(Resource::getName)
-                                 .toEither(ResourceError.RESOURCE_EXIST);
+    private Either<ResourceError, String> resourceNameAvailable(String name) {
+        return (resourceRepository.findByName(name).isDefined()) ? Either.left(ResourceError.RESOURCE_EXIST) : Either.right(name);
     }
 
     Either<ResourceError, UUID> addVariantsToResource(UUID resourceId, List<NewResourceVariantDto> variants) {

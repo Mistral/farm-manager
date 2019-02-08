@@ -55,17 +55,19 @@ class OperationManager {
     Either<OperationError, Operation> createResourceOperation(UUID farmlandId, OperationType type, Money unitCost, List<NewOperationResourceDto> resources) {
         List<OperationResource> operationResources;
         operationResources = resources.stream()
-                                      .map(resourceDto -> {
-                                          Option<Resource> resource = resourceFacade
-                                              .findResourceById(resourceDto.getResourceId());
-                                          Option<ResourceVariant> resourceVariant = resourceFacade
-                                              .findResourceVariantById(resourceDto.getVariantId());
-                                          if (resource.isDefined() && resourceVariant.isDefined()) {
-                                              return OperationResource
-                                                  .create(resource.get(), resourceVariant.get(), resourceDto);
-                                          }
-                                          return null;
-                                      })
+                                      .map(resourceDto -> resourceFacade.findResourceById(resourceDto.getResourceId())
+                                                                        .map(resource -> {
+                                                                            if (resourceDto.getVariantId() != null) {
+                                                                                Option<ResourceVariant> resourceVariant = resourceFacade
+                                                                                    .findResourceVariantById(resourceDto.getVariantId());
+                                                                                if (resourceVariant.isDefined()) {
+                                                                                    return OperationResource
+                                                                                        .create(resource, resourceVariant.get(), resourceDto);
+                                                                                }
+                                                                            }
+                                                                            return OperationResource.createWithoutVariant(resource, resourceDto);
+                                                                        })
+                                                                        .getOrElse(() -> null))
                                       .filter(Objects::nonNull)
                                       .collect(Collectors.toList());
         if (operationResources.size() != resources.size()) {

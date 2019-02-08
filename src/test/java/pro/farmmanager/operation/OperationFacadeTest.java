@@ -33,6 +33,7 @@ public class OperationFacadeTest {
         operationFacade = system.getOperationFacade();
         farmlandFacade = system.getFarmlandFacade();
         userFacade = system.getUserFacade();
+        resourceFacade = system.getResourceFacade();
     }
 
     private UUID createFarmland() {
