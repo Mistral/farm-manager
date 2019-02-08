@@ -12,9 +12,9 @@ public class Dose {
 
     public final static Dose ZERO = of(0d, Unit.LITERES);
 
-    private final Double value;
+    private Double value;
 
-    private final Unit unit;
+    private Unit unit;
 
     public static Dose of(Double value, Unit unit) {
         return new Dose(value, unit);
@@ -43,6 +43,10 @@ public class Dose {
     private Dose(Double value, Unit unit) {
         this.value = value;
         this.unit = unit;
+    }
+
+    private Dose() {
+
     }
 
 }

@@ -57,6 +57,10 @@ class Operation extends BaseEntity {
         return new Operation(farmlandId, type, unitCost, resources);
     }
 
+    private Operation() {
+
+    }
+
     private Operation(UUID farmlandId, OperationType type, Money cost, List<OperationResource> resources) {
         this.farmlandId = farmlandId;
         this.type = type;
