@@ -16,12 +16,13 @@ class ResourceVariant extends BaseEntity {
         return new ResourceVariant(resourceVariantDto.getName(), resourceVariantDto.getDescription());
     }
 
+    static ResourceVariant from(ResourceVariantDto variant) {
+        return new ResourceVariant(variant.getName(), variant.getDescription());
+    }
+
     private ResourceVariant(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    static ResourceVariant from(ResourceVariantDto variant) {
     }
 
 }
