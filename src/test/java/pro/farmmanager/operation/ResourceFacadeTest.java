@@ -3,6 +3,9 @@ package pro.farmmanager.operation;
 import org.junit.Before;
 import org.junit.Test;
 import pro.farmmanager.infrastructure.InMemorySystem;
+import pro.farmmanager.resources.ResourceError;
+import pro.farmmanager.resources.ResourceFacade;
+import pro.farmmanager.resources.ResourceType;
 
 import java.util.UUID;
 

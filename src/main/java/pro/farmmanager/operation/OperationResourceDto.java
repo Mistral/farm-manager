@@ -1,5 +1,7 @@
 package pro.farmmanager.operation;
 
+import pro.farmmanager.resources.ResourceDto;
+import pro.farmmanager.resources.ResourceVariantDto;
 import pro.farmmanager.shared_kernel.Dose;
 import pro.farmmanager.shared_kernel.Money;
 
@@ -11,9 +13,9 @@ public class OperationResourceDto {
 
     private UUID operationId;
 
-    private ResourceDto resource;
+    private UUID resourceId;
 
-    private ResourceVariantDto variant;
+    private UUID resourceVariantId;
 
     private Dose dose;
 
@@ -21,11 +23,11 @@ public class OperationResourceDto {
 
     private Money totalCost;
 
-    public OperationResourceDto(UUID id, UUID operationId, ResourceDto resource, ResourceVariantDto variant, Dose dose, Money unitCost, Money totalCost) {
+    public OperationResourceDto(UUID id, UUID operationId, UUID resourceId, UUID variantId, Dose dose, Money unitCost, Money totalCost) {
         this.id = id;
         this.operationId = operationId;
-        this.resource = resource;
-        this.variant = variant;
+        this.resourceId = resourceId;
+        this.resourceVariantId = variantId;
         this.dose = dose;
         this.unitCost = unitCost;
         this.totalCost = totalCost;
@@ -39,12 +41,12 @@ public class OperationResourceDto {
         return operationId;
     }
 
-    public ResourceDto getResource() {
-        return resource;
+    public UUID getResourceId() {
+        return resourceId;
     }
 
-    public ResourceVariantDto getVariant() {
-        return variant;
+    public UUID getResourceVariantId() {
+        return resourceVariantId;
     }
 
     public Dose getDose() {

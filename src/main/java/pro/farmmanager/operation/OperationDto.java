@@ -8,6 +8,8 @@ import java.util.UUID;
 
 public class OperationDto {
 
+    private UUID id;
+
     private final UUID farmlandId;
 
     private Money unitCost;
@@ -22,7 +24,8 @@ public class OperationDto {
 
     private Set<OperationResourceDto> resources = new LinkedHashSet<>();
 
-    OperationDto(UUID farmlandId, OperationType type, Money unitCost, Money totalCost, Money operationCost, Money resourceCost, Set<OperationResourceDto> resources) {
+    public OperationDto(UUID operationId, UUID farmlandId, OperationType type, Money unitCost, Money totalCost, Money operationCost, Money resourceCost, Set<OperationResourceDto> resources) {
+        this.id = operationId;
         this.farmlandId = farmlandId;
         this.type = type;
         this.unitCost = unitCost;
@@ -32,7 +35,7 @@ public class OperationDto {
         this.resources.addAll(resources);
     }
 
-    UUID getFarmlandId() {
+    public UUID getFarmlandId() {
         return farmlandId;
     }
 
@@ -58,6 +61,10 @@ public class OperationDto {
 
     public Set<OperationResourceDto> getResources() {
         return resources;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
 }

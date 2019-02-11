@@ -1,6 +1,5 @@
-package pro.farmmanager.operation;
+package pro.farmmanager.resources;
 
-import pro.farmmanager.operation.dto.NewResourceVariantDto;
 import pro.farmmanager.shared_kernel.BaseEntity;
 
 import javax.persistence.Entity;
@@ -12,7 +11,7 @@ class ResourceVariant extends BaseEntity {
 
     private String description;
 
-    static ResourceVariant createOf(NewResourceVariantDto resourceVariantDto) {
+    static ResourceVariant createOf(ResourceVariantCreateRequest resourceVariantDto) {
         return new ResourceVariant(resourceVariantDto.getName(), resourceVariantDto.getDescription());
     }
 
@@ -21,12 +20,16 @@ class ResourceVariant extends BaseEntity {
     }
 
     private ResourceVariant() {
-        
+
     }
 
     private ResourceVariant(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    ResourceVariantDto toDto() {
+        return new ResourceVariantDto(getId(), name, description);
     }
 
 }

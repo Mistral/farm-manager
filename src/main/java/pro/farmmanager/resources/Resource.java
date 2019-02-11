@@ -1,10 +1,11 @@
-package pro.farmmanager.operation;
+package pro.farmmanager.resources;
 
 import pro.farmmanager.shared_kernel.BaseEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 class Resource extends BaseEntity {
@@ -43,6 +44,11 @@ class Resource extends BaseEntity {
 
     private Resource() {
 
+    }
+
+    ResourceDto toDto() {
+        List<ResourceVariantDto> variantDtos = variants.stream().map(ResourceVariant::toDto).collect(Collectors.toList());
+        return new ResourceDto(getId(), name, description, type, variantDtos);
     }
 
     String getName() {

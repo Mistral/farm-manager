@@ -4,8 +4,8 @@ import pro.farmmanager.farmlands.FarmlandConfiguration;
 import pro.farmmanager.farmlands.FarmlandFacade;
 import pro.farmmanager.operation.OperationConfiguration;
 import pro.farmmanager.operation.OperationFacade;
-import pro.farmmanager.operation.ResourceConfiguration;
-import pro.farmmanager.operation.ResourceFacade;
+import pro.farmmanager.resources.ResourceConfiguration;
+import pro.farmmanager.resources.ResourceFacade;
 import pro.farmmanager.user.UserConfiguration;
 import pro.farmmanager.user.UserFacade;
 

@@ -1,4 +1,4 @@
-package pro.farmmanager.operation;
+package pro.farmmanager.resources;
 
 public enum ResourceType {
     CHEMISTRY,

@@ -1,12 +1,12 @@
-package pro.farmmanager.operation.dto;
+package pro.farmmanager.resources;
 
-public class NewResourceVariantDto {
+public class ResourceVariantCreateRequest {
 
     private String name;
 
     private String description;
 
-    public NewResourceVariantDto(String name, String description) {
+    public ResourceVariantCreateRequest(String name, String description) {
         this.name = name;
         this.description = description;
     }

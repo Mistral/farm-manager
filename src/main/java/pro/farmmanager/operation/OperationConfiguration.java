@@ -3,6 +3,7 @@ package pro.farmmanager.operation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pro.farmmanager.farmlands.FarmlandFacade;
+import pro.farmmanager.resources.ResourceFacade;
 
 @Configuration
 public class OperationConfiguration {

@@ -5,6 +5,8 @@ import io.vavr.control.Option;
 import pro.farmmanager.farmlands.FarmlandFacade;
 import pro.farmmanager.farmlands.dto.FarmlandDto;
 import pro.farmmanager.operation.dto.NewOperationResourceDto;
+import pro.farmmanager.resources.ResourceFacade;
+import pro.farmmanager.resources.ResourceVariantDto;
 import pro.farmmanager.shared_kernel.Money;
 
 import java.util.List;
@@ -58,14 +60,14 @@ class OperationManager {
                                       .map(resourceDto -> resourceFacade.findResourceById(resourceDto.getResourceId())
                                                                         .map(resource -> {
                                                                             if (resourceDto.getVariantId() != null) {
-                                                                                Option<ResourceVariant> resourceVariant = resourceFacade
+                                                                                Option<ResourceVariantDto> resourceVariant = resourceFacade
                                                                                     .findResourceVariantById(resourceDto.getVariantId());
                                                                                 if (resourceVariant.isDefined()) {
                                                                                     return OperationResource
-                                                                                        .create(resource, resourceVariant.get(), resourceDto);
+                                                                                        .create(resource.getId(), resourceVariant.get().getId(), resourceDto);
                                                                                 }
                                                                             }
-                                                                            return OperationResource.createWithoutVariant(resource, resourceDto);
+                                                                            return OperationResource.createWithoutVariant(resource.getId(), resourceDto);
                                                                         })
                                                                         .getOrElse(() -> null))
                                       .filter(Objects::nonNull)

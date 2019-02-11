@@ -122,7 +122,7 @@ class Operation extends BaseEntity {
                                                                 .map(OperationResource::toDto)
                                                                 .collect(Collectors.toSet());
 
-        return new OperationDto(farmlandId, type, unitCost, operationCost.add(materialCost), operationCost, materialCost, operationResources);
+        return new OperationDto(getId(), farmlandId, type, unitCost, operationCost.add(materialCost), operationCost, materialCost, operationResources);
     }
 
 }
