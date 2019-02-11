@@ -1,21 +1,19 @@
 package pro.farmmanager.operation;
 
 import pro.farmmanager.operation.dto.NewOperationResourceDto;
-import pro.farmmanager.operation.dto.NewResourceVariantDto;
 import pro.farmmanager.shared_kernel.BaseEntity;
 import pro.farmmanager.shared_kernel.Dose;
 import pro.farmmanager.shared_kernel.Money;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 class OperationResource extends BaseEntity {
 
-    @ManyToOne
-    private Resource resource;
+    private UUID resourceId;
 
-    @ManyToOne
-    private ResourceVariant variant;
+    private UUID resourceVariantId;
 
     @Embedded
     private Money unitCost;
@@ -23,49 +21,49 @@ class OperationResource extends BaseEntity {
     @Embedded
     private Dose dose;
 
-    public static OperationResource create(Resource resource) {
-        return new OperationResource(resource, null, null, Money.ZERO);
+    public static OperationResource create(UUID resourceId) {
+        return new OperationResource(resourceId, null, null, Money.ZERO);
     }
 
-    public static OperationResource createWithoutVariant(Resource resource, NewOperationResourceDto operationResourceDto) {
-        return new OperationResource(resource, null, operationResourceDto.getDose(), operationResourceDto.getUnitCost());
+    public static OperationResource createWithoutVariant(UUID resourceId, NewOperationResourceDto operationResourceDto) {
+        return new OperationResource(resourceId, null, operationResourceDto.getDose(), operationResourceDto.getUnitCost());
     }
 
-    public static OperationResource createWithVariant(Resource resource, ResourceVariant variant, NewOperationResourceDto operationResourceDto) {
-        return create(resource, variant, operationResourceDto);
+    public static OperationResource createWithVariant(UUID resourceId, UUID variantId, NewOperationResourceDto operationResourceDto) {
+        return create(resourceId, variantId, operationResourceDto);
     }
 
-    public static OperationResource create(Resource resource, ResourceVariant variant, NewOperationResourceDto operationResourceDto) {
-        return new OperationResource(resource, variant, operationResourceDto.getDose(), operationResourceDto.getUnitCost());
+    public static OperationResource create(UUID resourceId, UUID variantId, NewOperationResourceDto operationResourceDto) {
+        return new OperationResource(resourceId, variantId, operationResourceDto.getDose(), operationResourceDto.getUnitCost());
     }
 
-    public static OperationResource createWithDose(Resource resource, Dose dose) {
-        return new OperationResource(resource, null, dose, Money.ZERO);
+    public static OperationResource createWithDose(UUID resourceId, Dose dose) {
+        return new OperationResource(resourceId, null, dose, Money.ZERO);
     }
 
-    public static OperationResource createWithMoney(Resource resource, Money money) {
-        return new OperationResource(resource, null, null, money);
+    public static OperationResource createWithMoney(UUID resourceId, Money money) {
+        return new OperationResource(resourceId, null, null, money);
     }
 
-    public static OperationResource createWithDoseAndMoney(Resource resource, Money money, Dose dose) {
-        return new OperationResource(resource, null, dose, money);
+    public static OperationResource createWithDoseAndMoney(UUID resourceId, Money money, Dose dose) {
+        return new OperationResource(resourceId, null, dose, money);
     }
 
-    public static OperationResource createWithVariantAndMoney(Resource resource, ResourceVariant variant, Money money) {
-        return new OperationResource(resource, variant, null, money);
+    public static OperationResource createWithVariantAndMoney(UUID resourceId, UUID variantId, Money money) {
+        return new OperationResource(resourceId, variantId, null, money);
     }
 
-    public static OperationResource createWithVariantAndMoneyAndDose(Resource resource, ResourceVariant variant, Money money, Dose dose) {
-        return new OperationResource(resource, variant, dose, money);
+    public static OperationResource createWithVariantAndMoneyAndDose(UUID resourceId, UUID variantId, Money money, Dose dose) {
+        return new OperationResource(resourceId, variantId, dose, money);
     }
 
     public static OperationResource fromDto(OperationResourceDto dto) {
-        return new OperationResource(Resource.from(dto.getResource()), ResourceVariant.from(dto.getVariant()), dto.getDose(), dto.getUnitCost());
+        return new OperationResource(dto.getResourceId(), dto.getResourceVariantId(), dto.getDose(), dto.getUnitCost());
     }
 
-    private OperationResource(Resource resource, ResourceVariant variant, Dose dose, Money money) {
-        this.resource = resource;
-        this.variant = variant;
+    private OperationResource(UUID resourceId, UUID variantId, Dose dose, Money money) {
+        this.resourceId = resourceId;
+        this.resourceVariantId = variantId;
         this.dose = dose;
         this.unitCost = money;
     }

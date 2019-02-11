@@ -5,6 +5,8 @@ import org.junit.Test;
 import pro.farmmanager.farmlands.FarmlandFacade;
 import pro.farmmanager.infrastructure.InMemorySystem;
 import pro.farmmanager.operation.dto.NewOperationResourceDto;
+import pro.farmmanager.resources.ResourceFacade;
+import pro.farmmanager.resources.ResourceType;
 import pro.farmmanager.shared_kernel.Dose;
 import pro.farmmanager.shared_kernel.Money;
 import pro.farmmanager.user.UserFacade;

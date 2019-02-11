@@ -1,9 +1,8 @@
-package pro.farmmanager.operation;
+package pro.farmmanager.resources;
 
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import pro.farmmanager.infrastructure.Repository;
-import pro.farmmanager.operation.dto.NewResourceVariantDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +29,7 @@ class ResourceManager {
             .toEither(ResourceError.RESOURCE_EXIST);
     }
 
-    Either<ResourceError, UUID> createResourceWithVariant(String name, String description, ResourceType type, List<NewResourceVariantDto> variants) {
+    Either<ResourceError, UUID> createResourceWithVariant(String name, String description, ResourceType type, List<ResourceVariantCreateRequest> variants) {
         return resourceNameAvailable(name)
             .map(s -> {
                 Resource resource = Resource.createWithVariants(name, description, type, createResourceVariantsOf(variants));
@@ -40,7 +39,7 @@ class ResourceManager {
             .toEither(ResourceError.RESOURCE_EXIST);
     }
 
-    private List<ResourceVariant> createResourceVariantsOf(List<NewResourceVariantDto> variants) {
+    private List<ResourceVariant> createResourceVariantsOf(List<ResourceVariantCreateRequest> variants) {
         return variants.stream()
                        .map(ResourceVariant::createOf)
                        .collect(Collectors.toList());
@@ -50,7 +49,7 @@ class ResourceManager {
         return (resourceRepository.findByName(name).isDefined()) ? Either.left(ResourceError.RESOURCE_EXIST) : Either.right(name);
     }
 
-    Either<ResourceError, UUID> addVariantsToResource(UUID resourceId, List<NewResourceVariantDto> variants) {
+    Either<ResourceError, UUID> addVariantsToResource(UUID resourceId, List<ResourceVariantCreateRequest> variants) {
         return resourceRepository.findById(resourceId)
                                  .map(resource -> {
                                      resource.addVariants(createResourceVariantsOf(variants));
@@ -66,6 +65,10 @@ class ResourceManager {
 
     Option<ResourceVariant> findResourceVariantById(UUID variantId) {
         return resourceVariantRepository.findById(variantId);
+    }
+
+    List<Resource> getResources() {
+        return resourceRepository.findAll();
     }
 
 }
