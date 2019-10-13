@@ -1,0 +1,30 @@
+version: "3"
+services:
+  backend:
+    image: "xandareva/farm-manager:develop"
+    environment:
+      - SPRING_PROFILES_ACTIVE=development
+    ports:
+      - 8080:8080
+    restart: always
+  database:
+    image: "postgres:12"
+    environment:
+      - POSTGRES_USER=farm
+      - POSTGRES_PASSWORD=farm
+      - POSTGRES_DB=farm
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    environment:
+      - RABBITMQ_DEFAULT_USER: farm
+      - RABBITMQ_DEFAULT_PASS: farm
+    volumes:
+      - rabbitmq_volume:/var/lib/rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+volumes:
+  - postgres_volume: ./postgres-data
+  - rabbitmq_volume: ./rabbitmq-data
