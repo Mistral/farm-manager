@@ -15,11 +15,11 @@ jobs:
         java-version: 11
     - name: Test
       run: mvn test
-    - name: Build with Maven
+    - name: Build package
       run: mvn package --file pom.xml
     - name: Docker package
       run: docker build -t xandareva/farm-manager:develop -f Dockerfile .
     - name: Docker login
-      run: docker login --username ${{ secrets.DOCKERHUB_NAME }} --pasword ${{ secrets.DOCKERHUB_TOKEN }} 
+      run: docker login --username ${{ secrets.DOCKERHUB_NAME }} --password ${{ secrets.DOCKERHUB_TOKEN }} 
     - name: Docker push package
       run: docker push xandareva/farm-manager:develop
